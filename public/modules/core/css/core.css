@@ -1,6 +1,11 @@
 .content {
-	margin-top: 50px;
+	height:100vh;
 }
+
+#main-container{
+   width: calc(100vw - 138px);
+}
+
 .undecorated-link:hover {
 	text-decoration: none;
 }
@@ -12,4 +17,40 @@
 }
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
+}
+
+/* Toolbar CSS */
+
+#toolbar{
+    width:90px;
+    background-color:#1C1C1F;
+    z-index:61;
+}
+#toolbar .brand{
+    height:51px;
+}
+
+#toolbar .navigation{
+    height:63px;
+    color:#88898C
+}
+
+#toolbar .navigation:hover{
+    color:#DFE0E6;
+    cursor:pointer;
+}
+
+/* Search Panel*/
+#search-panel{
+    margin-left:90px;
+    background-color:#222326;
+}
+
+#search-panel .header{
+    background-color:#3E3E40;
+}
+
+#search-panel .body{
+    background-color:#222326;
+    color:#88898C;
 }

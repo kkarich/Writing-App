@@ -1,0 +1,31 @@
+<section data-ng-controller="ToolbarController">
+	<div layout="column" layout-align="center center">
+        <div layout="column" layout-align="center center" class = "brand">Brand</div>
+        
+        <div ng-click="toggleLeft()" layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-search fa-2x"></i>
+            <div>Search</div>
+        </div>
+        
+         <div ui-sref="createRoom" layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-keyboard-o fa-2x"></i>
+            <div>Write</div>
+        </div>
+        
+         <div  ui-sref="explore" layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-rocket fa-2x"></i>
+            <div>Explore</div>
+        </div>
+        
+         <div layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-book fa-2x"></i>
+            <div>My Stories</div>
+        </div>
+        
+         <div ui-sref="profile"  layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-user fa-2x"></i>
+            <div>Profile</div>
+        </div>
+        
+    </div>
+</section>
