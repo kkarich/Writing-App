@@ -1,23 +1,24 @@
 'use strict';
 
 // Rooms controller
-angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms',
-	function($scope, $stateParams, $location, Authentication, Rooms) {
+angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
+	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
-
+        $scope.room = {};
+ 
 		// Create new Room
 		$scope.create = function() {
 			// Create new Room object
 			var room = new Rooms ({
-				name: this.name
+				prompt:$scope.room.prompt
 			});
 
 			// Redirect after save
 			room.$save(function(response) {
 				$location.path('rooms/' + response._id);
-
+                console.log(response)
 				// Clear form fields
-				$scope.name = '';
+				$scope.room.prompt = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -61,6 +62,8 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			$scope.room = Rooms.get({ 
 				roomId: $stateParams.roomId
 			});
+		
+			
 		};
 	}
 ]);

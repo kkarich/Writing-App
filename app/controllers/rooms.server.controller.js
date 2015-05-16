@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Room = mongoose.model('Room'),
+	WritingBlock = mongoose.model('WritingBlock'),
 	_ = require('lodash');
 
 /**
@@ -21,6 +22,9 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+		
+            var socketio = req.app.get('socketio'); // tacke out socket instance from the app container
+            socketio.sockets.emit('room.created', room); // emit an event for all connected clients
 			res.jsonp(room);
 		}
 	});
@@ -80,6 +84,21 @@ exports.list = function(req, res) {
 			});
 		} else {
 			res.jsonp(rooms);
+		}
+	});
+};
+
+/**
+ * List of Writing blocks for room
+ */
+exports.writingBlocks = function(req, res) { 
+	WritingBlock.find({room:req.room}).sort('created').populate('user', 'displayName').exec(function(err, writingBlocks) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(writingBlocks);
 		}
 	});
 };

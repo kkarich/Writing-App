@@ -93,17 +93,17 @@
 		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function(Rooms) {
 			// Create a sample Room object
 			var sampleRoomPostData = new Rooms({
-				name: 'New Room'
+				prompt: 'New prompt'
 			});
 
 			// Create a sample Room response
 			var sampleRoomResponse = new Rooms({
 				_id: '525cf20451979dea2c000001',
-				name: 'New Room'
+				prompt: 'New prompt'
 			});
 
 			// Fixture mock form input values
-			scope.name = 'New Room';
+			scope.room.prompt = 'New prompt';
 
 			// Set POST response
 			$httpBackend.expectPOST('rooms', sampleRoomPostData).respond(sampleRoomResponse);
@@ -113,7 +113,7 @@
 			$httpBackend.flush();
 
 			// Test form inputs are reset
-			expect(scope.name).toEqual('');
+			expect(scope.room.prompt).toEqual('');
 
 			// Test URL redirection after the Room was created
 			expect($location.path()).toBe('/rooms/' + sampleRoomResponse._id);

@@ -1,18 +1,32 @@
 <section layout = "row" data-ng-controller="RoomsController">
 
     
- <md-card flex = "50">
-     
-      <md-card-content>
+ <md-card flex = "50" layout-padding>
+   <md-card-content>
         <h2 class="md-title">Create new room</h2>
-        <p>
-          This will be the form to create a new room. Maybe things like: public/private, room duration, and prompt
-        </p>
-      </md-card-content>
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-button>Create</md-button>
+         <form name="roomForm" class="form-horizontal" data-ng-submit="create()" novalidate>
+     
+        <md-input-container>
+            <label>Prompt</label>
+            <input id="prompt" md-maxlength="50" required name="prompt" ng-model="room.prompt">
+           
+        </md-input-container>
+        
+        <md-button type = "button" class="md-raised">Generate new prompt</md-button>
+           <md-checkbox ng-model="room.private" aria-label="Checkbox 2"  class="md-warn">
+              Make this room private
+            </md-checkbox>
+        
+     
+        <div class="md-actions" layout="row" layout-align="end center">
+        <md-button type="submit">Create</md-button>
     
       </div>
+		</form>
+      </md-card-content>
+   
+    
+      
     </md-card>
      <md-card flex = "50">
      

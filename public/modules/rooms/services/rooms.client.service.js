@@ -7,6 +7,11 @@ angular.module('rooms').factory('Rooms', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			writingBlocks:{
+			    url: '/rooms/:roomId/writing-blocks',
+			    method: 'GET',
+			    isArray:true,
 			}
 		});
 	}

@@ -6,6 +6,7 @@
 var fs = require('fs'),
 	http = require('http'),
 	https = require('https'),
+	socketio = require('socket.io'),
 	express = require('express'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
@@ -157,6 +158,28 @@ module.exports = function(db) {
 		// Return HTTPS server instance
 		return httpsServer;
 	}
+	// Attach Socket.io
+    var server = http.createServer(app);
+    var io = socketio.listen(server);
+    app.set('socketio', io);
+    app.set('server', server);
+    
+    //When recieve join event from items controller add user id to room. (used for only sending data to correct users)
+   //When recieve join event from items controller add user id to room. (used for only sending data to correct users)
+    io.on('connection', function (socket) {
+      
+      socket.on('join',function(room){
+          console.log('join',room)
+          socket.join(room);
+      });
+      
+    socket.on('room.text.changed', function (data) {
+        console.log('room changed',data)
+        socket.to(data.room).emit('text.changed',data.text);
+    });
+      
+      
+    });
 
 	// Return Express server instance
 	return app;

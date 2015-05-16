@@ -13,6 +13,8 @@ module.exports = function(app) {
 		.get(rooms.read)
 		.put(users.requiresLogin, rooms.hasAuthorization, rooms.update)
 		.delete(users.requiresLogin, rooms.hasAuthorization, rooms.delete);
+	app.route('/rooms/:roomId/writing-blocks')
+		.get(rooms.writingBlocks)
 
 	// Finish by binding the Room middleware
 	app.param('roomId', rooms.roomByID);

@@ -14,8 +14,12 @@ angular.module('rooms').config(['$stateProvider',
 			templateUrl: 'modules/rooms/views/create-room.client.view.html'
 		}).
 		state('viewRoom', {
-			url: '/rooms/:roomId',
+			url: '/rooms/:roomId/view',
 			templateUrl: 'modules/rooms/views/view-room.client.view.html'
+		}).
+		state('activeRoom', {
+			url: '/rooms/:roomId',
+			templateUrl: 'modules/rooms/views/active-room.client.view.html'
 		}).
 		state('editRoom', {
 			url: '/rooms/:roomId/edit',

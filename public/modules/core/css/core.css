@@ -3,7 +3,9 @@
 }
 
 #main-container{
-   width: calc(100vw - 138px);
+    height:100%;
+    width: calc(100vw - 90px);
+    margin-left:90px;
 }
 
 .undecorated-link:hover {
@@ -23,6 +25,8 @@
 
 #toolbar{
     width:90px;
+    height:100%;
+    position:fixed;
     background-color:#1C1C1F;
     z-index:61;
 }
@@ -53,4 +57,14 @@
 #search-panel .body{
     background-color:#222326;
     color:#88898C;
+}
+
+md-grid-list md-grid-tile {
+    background-color:bisque;
+}
+
+/* Writing - block*/
+
+.writing-block:hover{
+    color:red;
 }

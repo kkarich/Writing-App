@@ -7,30 +7,26 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Room Schema
+ * Writing block Schema
  */
-var RoomSchema = new Schema({
-	prompt: {
+var WritingBlockSchema = new Schema({
+	text: {
 		type: String,
 		default: '',
 		trim: true
-	},
-	category: {
-		type: String,
-		default: '',
-		trim: true
-	},
-	active: {
-		type: Boolean
 	},
 	created: {
 		type: Date,
 		default: Date.now
 	},
-	creator: {
+	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	room: {
+		type: Schema.ObjectId,
+		ref: 'Room'
 	}
 });
 
-mongoose.model('Room', RoomSchema);
+mongoose.model('WritingBlock', WritingBlockSchema);
