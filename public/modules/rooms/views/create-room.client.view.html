@@ -1,17 +1,18 @@
 <section layout = "row" data-ng-controller="RoomsController">
 
     
- <md-card flex = "50" layout-padding>
+ <md-card flex>
    <md-card-content>
-        <h2 class="md-title">Create new room</h2>
-         <form name="roomForm" class="form-horizontal" data-ng-submit="create()" novalidate>
-     
-        <md-input-container>
+        <h2 class="md-display-2">Join a room and start writing!</h2>
+        <p></p>
+         <form name="roomForm" class="form-horizontal" data-ng-submit="join()" novalidate>
+        <md-button class="md-raised md-primary">Join</md-button>
+       <!-- <md-input-container>
             <label>Prompt</label>
             <input id="prompt" md-maxlength="50" required name="prompt" ng-model="room.prompt">
            
         </md-input-container>
-        
+       
         <md-button type = "button" class="md-raised">Generate new prompt</md-button>
            <md-checkbox ng-model="room.private" aria-label="Checkbox 2"  class="md-warn">
               Make this room private
@@ -22,23 +23,13 @@
         <md-button type="submit">Create</md-button>
     
       </div>
+       -->
 		</form>
       </md-card-content>
    
     
       
     </md-card>
-     <md-card flex = "50">
-     
-      <md-card-content>
-        <h2 class="md-title">Quick join</h2>
-        <p>
-        Join the next available room. 
-        </p>
-      </md-card-content>
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-button>Join</md-button>
-      </div>
-    </md-card>
+    
     
 </section>

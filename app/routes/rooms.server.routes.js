@@ -6,15 +6,17 @@ module.exports = function(app) {
 
 	// Rooms Routes
 	app.route('/rooms')
-		.get(rooms.list)
+		.get(rooms.join)
 		.post(users.requiresLogin, rooms.create);
+	app.route('/rooms/join')
+		.post(users.requiresLogin, rooms.join);
 
 	app.route('/rooms/:roomId')
 		.get(rooms.read)
 		.put(users.requiresLogin, rooms.hasAuthorization, rooms.update)
 		.delete(users.requiresLogin, rooms.hasAuthorization, rooms.delete);
 	app.route('/rooms/:roomId/writing-blocks')
-		.get(rooms.writingBlocks)
+		.get(rooms.writingBlocks);
 
 	// Finish by binding the Room middleware
 	app.param('roomId', rooms.roomByID);

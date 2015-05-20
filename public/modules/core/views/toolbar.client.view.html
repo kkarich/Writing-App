@@ -1,30 +1,45 @@
-<section data-ng-controller="ToolbarController">
+<section class = "toolbar-content" data-ng-controller="ToolbarController">
 	<div layout="column" layout-align="center center">
-        <div layout="column" layout-align="center center" class = "brand">Brand</div>
-        
+       
+        <div layout="column" layout-align="center center" class = "navigation">
+            <i class="fa fa-leaf fa-2x"></i>
+            <md-tooltip md-direction = "right">
+                Home
+             </md-tooltip>
+        </div>
+        <!--
         <div ng-click="toggleLeft()" layout="column" layout-align="center center" class = "navigation">
             <i class="fa fa-search fa-2x"></i>
             <div>Search</div>
         </div>
-        
+        -->
          <div ui-sref="createRoom" layout="column" layout-align="center center" class = "navigation">
             <i class="fa fa-keyboard-o fa-2x"></i>
-            <div>Create</div>
+            <md-tooltip md-direction = "right">
+                Create
+             </md-tooltip>
         </div>
         
          <div  ui-sref="explore" layout="column" layout-align="center center" class = "navigation">
             <i class="fa fa-rocket fa-2x"></i>
-            <div>Explore</div>
+            <md-tooltip md-direction = "right">
+                Explore
+             </md-tooltip>
         </div>
-        
+       <!--
          <div layout="column" layout-align="center center" class = "navigation">
             <i class="fa fa-book fa-2x"></i>
-            <div>My Stories</div>
-        </div>
+             <md-tooltip md-direction = "right">
+                My Stories
+             </md-tooltip>
         
+        </div>
+         -->
          <div ui-sref="profile"  layout="column" layout-align="center center" class = "navigation">
             <i class="fa fa-user fa-2x"></i>
-            <div>Profile</div>
+            <md-tooltip md-direction = "right">
+                My Profile
+             </md-tooltip>
         </div>
         
     </div>

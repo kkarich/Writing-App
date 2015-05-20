@@ -1,11 +1,17 @@
+body{
+    background-color:#EDEFF0
+}
+
 .content {
 	height:100vh;
+	
 }
+
 
 #main-container{
     height:100%;
-    width: calc(100vw - 90px);
-    margin-left:90px;
+    width: calc(100vw - 70px);
+    margin-left:70px;
 }
 
 .undecorated-link:hover {
@@ -24,24 +30,64 @@
 /* Toolbar CSS */
 
 #toolbar{
-    width:90px;
+    width:70px;
     height:100%;
     position:fixed;
     background-color:#1C1C1F;
     z-index:61;
 }
+
+
+
+
 #toolbar .brand{
     height:51px;
 }
 
 #toolbar .navigation{
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    
     height:63px;
     color:#88898C
+}
+
+#toolbar .navigation:nth-child(1){
+   top:10px;
+    
+}
+
+#toolbar .navigation:nth-child(2){
+   top:73px;
+    
+}
+
+#toolbar .navigation:nth-child(3){
+   top:136px;
+    
+}
+
+#toolbar .navigation:last-child{
+   
+  
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    bottom:20px;
 }
 
 #toolbar .navigation:hover{
     color:#DFE0E6;
     cursor:pointer;
+}
+
+#toolbar .navigation.current{
+    border-left: 3px solid white;
 }
 
 /* Search Panel*/
@@ -67,4 +113,8 @@ md-grid-list md-grid-tile {
 
 .writing-block:hover{
     color:red;
+}
+
+md-tooltip{
+    background-color:#30363C;
 }

@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('core').controller('ToolbarController', ['$scope','$mdSidenav','$mdUtil', '$log',
-	function($scope,$mdSidenav,$mdUtil, $log) {
+angular.module('core').controller('ToolbarController', ['$scope','$mdSidenav','$mdUtil', '$log','$location',
+	function($scope,$mdSidenav,$mdUtil, $log,$location) {
 		// Toolbar controller logic
 		// ...
-	$scope.toggleLeft = buildToggler('search-panel');
+		
     /**
      * Build handler to open/close a SideNav; when animation finishes
      * report completion in console
@@ -14,11 +14,13 @@ angular.module('core').controller('ToolbarController', ['$scope','$mdSidenav','$
             $mdSidenav(navID)
               .toggle()
               .then(function () {
-                $log.debug("toggle " + navID + " is done");
+                $log.debug('toggle ' + navID + ' is done');
               });
           },300);
       return debounceFn;
     }
+	$scope.toggleLeft = buildToggler('search-panel');
+ 
 		
 	}
 ]);

@@ -1,3 +1,74 @@
-<section data-ng-controller="HomeController">
-
+<section md-padding data-ng-controller="HomeController">
+<md-tabs md-dynamic-height flex md-selected="data.selectedIndex" >
+      <md-tab id="rooms">
+        <md-tab-label><i class="fa fa-keyboard-o fa-2x"></i> <md-tooltip md-direction = "bottom">
+                Create
+             </md-tooltip></md-tab-label>
+       
+        <md-tab-body  >
+                <md-card>
+      <md-card-content>
+        <h1  class="md-display-2">Start Writting</h1>
+        <section layout="row" >
+            <md-content flex='50' >
+                <p>This is some text about some things</p>
+            </md-content>
+             <md-content flex='50'>
+                 <md-button class="md-raised">Button</md-button>
+            </md-content>
+        </section>
+      </md-card-content>
+    </md-card>
+        </md-tab-body>
+      </md-tab>
+      <md-tab id="stories">
+        <md-tab-label><i class="fa fa-rocket fa-2x"></i><md-tooltip md-direction = "bottom">
+                Explore
+             </md-tooltip></md-tab-label>
+        <md-tab-body>
+          <md-content >
+              <md-grid-list
+        md-cols-sm="2"  md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+    <md-grid-tile class="gray"
+        md-rowspan="4" md-colspan="3" md-colspan-sm="1">
+      <md-grid-tile-footer>
+        <h3>#1: (3r x 2c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile class="green">
+      <md-grid-tile-footer>
+        <h3>#2: (1r x 1c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile class="yellow">
+      <md-grid-tile-footer>
+        <h3>#3: (1r x 1c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile class="blue"
+        md-rowspan="2">
+      <md-grid-tile-footer>
+        <h3>#4: (2r x 1c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile class="red"
+        md-rowspan="2" md-colspan="2" md-colspan-sm="1">
+      <md-grid-tile-footer>
+        <h3>#5: (2r x 2c)</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+    <md-grid-tile class="green"
+        md-rowspan="2" >
+        This is a test
+      <md-grid-tile-footer>
+        <h3>Category</h3>
+      </md-grid-tile-footer>
+    </md-grid-tile>
+  </md-grid-list>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
 </section>

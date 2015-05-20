@@ -12,6 +12,10 @@ angular.module('rooms').factory('Rooms', ['$resource',
 			    url: '/rooms/:roomId/writing-blocks',
 			    method: 'GET',
 			    isArray:true,
+			},
+			join:{
+			    url: '/rooms/join',
+			    method: 'POST'
 			}
 		});
 	}

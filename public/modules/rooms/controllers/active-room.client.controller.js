@@ -5,11 +5,14 @@
 angular.module('rooms').controller('ActiveRoomController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
+		$scope.disabled = true;
+		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
 		
-		Socket.emit('join', $stateParams.roomId) ;
-        		
-		Socket.on('room.created', function(room) {
-            console.log(room);
+		
+		 Socket.on('room.queue-change', function(queue) {
+            if ($scope.authentication.user._id === queue[0])
+                $scope.disabled = false;
+            
         });
         
         Socket.on('room.writing-block.created', function(writingBlock) {
@@ -19,13 +22,11 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
         });
         
         Socket.on('text.changed', function (text) {
-            console.log(text)
             $scope.text = text;
         });
         
         $scope.inputChanged = function(){
-            console.log('change')
-            Socket.emit('room.text.changed',{room:$stateParams.roomId,text:$scope.text});
+            Socket.emit('room.text.changed',{user: $scope.authentication.user._id,room:$stateParams.roomId,text:$scope.text});
         };
         // Create new writing Block
 		$scope.create_block = function() {
@@ -37,10 +38,7 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 
 			// Redirect after save
 			block.$save(function(response) {
-			    console.log(response)
-			    	
 			}, function(errorResponse) {
-			    console.log(errorResponse)
 				$scope.error = errorResponse.data.message;
 			});
 		};
@@ -48,7 +46,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		// Create new Room
 		$scope.create = function() {
 			// Create new Room object
-			console.log(this.title)
 			var room = new Rooms ({
 				prompt:$scope.room.prompt
 			});
@@ -56,7 +53,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 			// Redirect after save
 			room.$save(function(response) {
 				$location.path('rooms/' + response._id);
-                console.log(response)
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {

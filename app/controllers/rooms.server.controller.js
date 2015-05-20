@@ -31,6 +31,55 @@ exports.create = function(req, res) {
 };
 
 /**
+ * Join/create room
+ */
+exports.join = function(req, res) {
+    
+    Room.findOne({active:false,completed:false}).sort('-created').populate('user', 'displayName').exec(function(err, room) {
+		//If there is an error return the error
+		if (err) {
+            console.log(err);
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		//If no error check if a room was found 
+		} else {
+		    //If room was found, use that room
+            if(room) {
+                room.active = true;
+                room.save(function(err) {
+                    if (err) {
+                        return res.status(400).send({
+                            message: errorHandler.getErrorMessage(err)
+                        });
+                    } else {
+                        res.jsonp(room);
+                    }
+                });
+                
+            }
+            //If no room was found create a new one and use that room
+            else{
+                var new_room = new Room(req.body);
+                new_room.user = req.user;
+
+                new_room.save(function(err) {
+                    if (err) {
+                        return res.status(400).send({
+                            message: errorHandler.getErrorMessage(err)
+                        });
+                    } else {
+                        res.jsonp(new_room);
+                    }
+                });
+            }
+		}
+	});
+    
+	
+};
+
+/**
  * Show the current Room
  */
 exports.read = function(req, res) {

@@ -4,7 +4,11 @@
 angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
-        $scope.room = {};
+        $scope.room = {
+            prompt:'some random prompt',
+            active:false,
+            filled:false
+        };
  
 		// Create new Room
 		$scope.create = function() {
@@ -16,9 +20,22 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			// Redirect after save
 			room.$save(function(response) {
 				$location.path('rooms/' + response._id);
-                console.log(response)
 				// Clear form fields
 				$scope.room.prompt = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+		
+		//	join room
+		$scope.join = function() {
+			// Create new Room object
+			var room = new Rooms ();
+			console.log(room);
+
+			// Redirect after save
+			room.$join(function(response) {
+				$location.path('rooms/' + response._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

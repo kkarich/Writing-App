@@ -21,7 +21,12 @@ var RoomSchema = new Schema({
 		trim: true
 	},
 	active: {
-		type: Boolean
+		type: Boolean,
+		default: false
+	},
+	completed: {
+		type: Boolean,
+		default: false
 	},
 	created: {
 		type: Date,
