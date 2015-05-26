@@ -1,9 +1,9 @@
 <section data-ng-controller="ActiveRoomController" data-ng-init="init()">
     <md-content>
     
-<md-card>
-      <md-card-content>
-        <h2 class="md-title">{{room._id}}</h2>
+    <md-card ng-show="roomState === roomStates.ACTIVE">
+      <md-card-content >
+        <h2 class="md-title">{{room._id}} {{roomState}} {{states.ACTIVE}}</h2>
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 
     	      <md-tooltip>
@@ -11,9 +11,27 @@
         </md-tooltip>
     	</span>
     	<form  data-ng-submit="create_block()">
-        <textarea ng-change="inputChanged()"  ng-model="text" class="form-control" rows="3"></textarea>
+        <textarea ng-change="inputChanged()" ng-disabled="!room.currentWriter" ng-model="text" class="form-control" rows="3"></textarea>
     	<md-button>Add</md-button>
     	</form>
+      </md-card-content>
+     
+    </md-card>
+    
+    <md-card ng-show="roomState === roomStates.WAITING">
+      <md-card-content >
+        <h2 class="md-title">Waiting for friends</h2>
+       
+    	<md-content></md-content>
+      </md-card-content>
+     
+    </md-card>
+    
+    <md-card ng-show="roomState === roomStates.READY">
+      <md-card-content >
+        <h2 class="md-title">Let us know when you are ready</h2>
+       
+    	<md-button ng-click = "ready()">Add</md-button>
       </md-card-content>
      
     </md-card>

@@ -12,6 +12,12 @@ var mongoose = require('mongoose'),
 /**
  * Create a Room
  */
+ 
+exports.update = function(){
+    console.log('this is a controller test')
+};
+
+ 
 exports.create = function(req, res) {
 	var room = new Room(req.body);
 	room.user = req.user;
@@ -35,7 +41,7 @@ exports.create = function(req, res) {
  */
 exports.join = function(req, res) {
     
-    Room.findOne({active:false,completed:false}).sort('-created').populate('user', 'displayName').exec(function(err, room) {
+    Room.findOne({full:false,completed:false}).sort('-created').populate('user', 'displayName').exec(function(err, room) {
 		//If there is an error return the error
 		if (err) {
             console.log(err);
@@ -46,7 +52,7 @@ exports.join = function(req, res) {
 		} else {
 		    //If room was found, use that room
             if(room) {
-                room.active = true;
+                room.full = true;
                 room.save(function(err) {
                     if (err) {
                         return res.status(400).send({
@@ -88,7 +94,7 @@ exports.read = function(req, res) {
 
 /**
  * Update a Room
- */
+
 exports.update = function(req, res) {
 	var room = req.room ;
 
@@ -104,7 +110,7 @@ exports.update = function(req, res) {
 		}
 	});
 };
-
+ */
 /**
  * Delete an Room
  */

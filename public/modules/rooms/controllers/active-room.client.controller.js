@@ -5,14 +5,34 @@
 angular.module('rooms').controller('ActiveRoomController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
-		$scope.disabled = true;
+		
+		$scope.roomStates = {
+            WAITING:'waiting',
+            READY:'ready',
+            ACTIVE:'active'
+		};
+		
+		
+		
 		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
 		
 		
-		 Socket.on('room.queue-change', function(queue) {
-            if ($scope.authentication.user._id === queue[0])
-                $scope.disabled = false;
+        Socket.on('room.queue-change', function(position) {
+            if (position == 0){
+                $scope.room.currentWriter = true;
+            }
+            else {
+                $scope.room.currentWriter = false;
+            }
+            $scope.$apply();
+            console.log(position);
             
+        });
+        
+         Socket.on('room.state', function(state) {
+            console.log(state,'state')
+           $scope.roomState = state;
+           $scope.$apply();
         });
         
         Socket.on('room.writing-block.created', function(writingBlock) {
@@ -25,22 +45,33 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
             $scope.text = text;
         });
         
-        $scope.inputChanged = function(){
-            Socket.emit('room.text.changed',{user: $scope.authentication.user._id,room:$stateParams.roomId,text:$scope.text});
+        $scope.ready = function(){
+           
+            Socket.emit('room.writer.ready',{user: $scope.authentication.user._id,room:$stateParams.roomId});
+                
         };
+        
+        $scope.inputChanged = function(){
+            if($scope.room.currentWriter){
+                Socket.emit('room.text.changed',{user: $scope.authentication.user._id,room:$stateParams.roomId,text:$scope.text});
+            }
+                
+            };
         // Create new writing Block
 		$scope.create_block = function() {
-			console.log(this.text,$scope.room);
-			var block = new WritingBlocks ({
-				text: $scope.text,
-				room:$stateParams.roomId
-			});
-
-			// Redirect after save
-			block.$save(function(response) {
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
+		    if($scope.room.currentWriter){
+                console.log(this.text,$scope.room);
+                var block = new WritingBlocks ({
+                    text: $scope.text,
+                    room:$stateParams.roomId
+                });
+                
+                // Redirect after save
+                block.$save(function(response) {
+                    }, function(errorResponse) {
+                    $scope.error = errorResponse.data.message;
+                });
+		    }
 		};
 
 		// Create new Room
@@ -98,6 +129,7 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 			$scope.room = Rooms.get({ 
 				roomId: $stateParams.roomId
 			});
+			
 			$scope.writingBlocks = Rooms.writingBlocks({ 
 				roomId: $stateParams.roomId
 			});

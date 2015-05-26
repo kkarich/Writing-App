@@ -22,10 +22,8 @@ var fs = require('fs'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path'),
-	Manager = require('../app/modules/queue.js');
-	
-	var queueManager = new Manager();
+	path = require('path');
+
 	
 	
 	
@@ -33,7 +31,7 @@ var fs = require('fs'),
 module.exports = function(db) {
 	// Initialize express app
 	var app = express();
-
+    
 	// Globbing model files
 	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
 		require(path.resolve(modelPath));
@@ -170,37 +168,9 @@ module.exports = function(db) {
     app.set('socketio', io);
     app.set('server', server);
     
-    //When recieve join event from items controller add user id to room. (used for only sending data to correct users)
-    io.on('connection', function (socket) {
-      
-        socket.on('join',function(data){
-            console.log('join room',data.room);
-            console.log('join user',data.user);
-              
-            socket.join(data.room);
-            socket.join(data.user);
-              
-            var queue = queueManager.getQueue(data.room);
-            queue.addMember(data.user);
-              
-              
-            //socket.emit('room.queue-change', queue.writers); 
-              
-            console.log('writers',queue.writers)
-            console.log('watchers',queue.watchers)
-              
-            console.log('sockets in room',io.nsps['/'].adapter.rooms[data.room]);
-        });
-      
-        socket.on('room.text.changed', function (data) {
-            var queue = queueManager.getQueue(data.room);
-            
-            if (data.user === queue.writers[0])
-                socket.to(data.room).emit('text.changed',data.text);
-        });
-      
-      
-    });
+    var QueueManager = require('../app/modules/queue.js')(app);
+	
+
 
 	// Return Express server instance
 	return app;

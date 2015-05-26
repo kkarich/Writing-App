@@ -20,7 +20,7 @@ var RoomSchema = new Schema({
 		default: '',
 		trim: true
 	},
-	active: {
+	full: {
 		type: Boolean,
 		default: false
 	},
