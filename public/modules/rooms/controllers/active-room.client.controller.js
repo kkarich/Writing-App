@@ -14,10 +14,19 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		
 		
 		
+		
+		
 		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
 		
 		
         Socket.on('room.queue-change', function(position) {
+            var seconds = new Date().getTime() / 1000;
+            console.log(seconds)
+            
+            if ($scope.room.currentWriter){
+                $scope.create_block()}
+                
+            $scope.text = '';
             if (position == 0){
                 $scope.room.currentWriter = true;
             }
@@ -36,7 +45,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
         });
         
         Socket.on('room.writing-block.created', function(writingBlock) {
-            console.log(writingBlock);
             $scope.writingBlocks.push(writingBlock);
             $scope.text = '';
         });

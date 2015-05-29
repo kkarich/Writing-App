@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var writingBlock = new WritingBlock(req.body);
 	writingBlock.user = req.user;
-	console.log(writingBlock);
 
 	writingBlock.save(function(err) {
 		if (err) {

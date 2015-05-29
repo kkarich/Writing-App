@@ -3,17 +3,15 @@
     
     <md-card ng-show="roomState === roomStates.ACTIVE">
       <md-card-content >
-        <h2 class="md-title">{{room._id}} {{roomState}} {{states.ACTIVE}}</h2>
+        <h2 class="md-title">The asteroid was hurtling straight for Earth…</h2> 
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 
     	      <md-tooltip>
           created by {{block.user.displayName}}
         </md-tooltip>
     	</span>
-    	<form  data-ng-submit="create_block()">
         <textarea ng-change="inputChanged()" ng-disabled="!room.currentWriter" ng-model="text" class="form-control" rows="3"></textarea>
-    	<md-button>Add</md-button>
-    	</form>
+    	
       </md-card-content>
      
     </md-card>

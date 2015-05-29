@@ -13,8 +13,21 @@ var mongoose = require('mongoose'),
  * Create a Room
  */
  
-exports.update = function(){
-    console.log('this is a controller test')
+exports.update = function(room){
+    Room.findById(room._id).populate('user', 'displayName').exec(function(err, roomObj) {
+        
+		roomObj = _.extend(roomObj , room);
+        
+    	roomObj.save(function(err) {
+    		if (err) {
+    			return err
+    		} else {
+    			console.log(roomObj)
+    		}
+    	});
+	});
+    
+	
 };
 
  
@@ -52,16 +65,8 @@ exports.join = function(req, res) {
 		} else {
 		    //If room was found, use that room
             if(room) {
-                room.full = true;
-                room.save(function(err) {
-                    if (err) {
-                        return res.status(400).send({
-                            message: errorHandler.getErrorMessage(err)
-                        });
-                    } else {
-                        res.jsonp(room);
-                    }
-                });
+                
+                res.jsonp(room);
                 
             }
             //If no room was found create a new one and use that room

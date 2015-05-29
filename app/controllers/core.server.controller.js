@@ -9,3 +9,10 @@ exports.index = function(req, res) {
 		request: req
 	});
 };
+
+exports.home = function(req, res) {
+	res.render('home', {
+		user: req.user || null,
+		request: req
+	});
+};

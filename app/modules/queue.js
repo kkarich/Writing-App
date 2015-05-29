@@ -5,7 +5,7 @@ var Room = require('../../app/controllers/rooms.server.controller');
 util.inherits(Queue, EventEmitter);
 
 module.exports = function(app){
-    var io = app.get('socketio')
+    var io = app.get('socketio');
     var queueManager = new QueueManager();
     //When recieve join event from items controller add user id to room. (used for only sending data to correct users)
     io.on('connection', function (socket) {
@@ -17,25 +17,29 @@ module.exports = function(app){
             
             //get queue instance or create new one
             var queue = queueManager.getQueue(data.room) || queueManager.createQueue(data.room);
-            console.log(queue.roomState,queue.room)
             socket.emit('room.state',queue.roomState);
-             //If queue does not already have times up event then add it
             
+             //If queue does not already have times up event then add it
+             if(!queue._events['times-up']){
                 queue.on('times-up', function () {
                     console.log(queue.writers);
                     for(var i in queue.writers){
+                        console.log(queue.writers[i],io.nsps['/'].adapter.rooms[queue.writers[i]]);
                         socket.to(queue.writers[i]).emit('room.queue-change',i);
                     }
                 }); 
+             }
                 
-                //If queue does not already have times up event then add it
+            //If queue does not already have times up event then add it
+            if(!queue._events['update-state']){
                 queue.on('update-state', function () {
-                    console.log('update state',queue.roomState)
-                    socket.to(queue.room).emit('room.state',queue.roomState);
+                    //Send room state to room
+                    socket.to(queue.room._id).emit('room.state',queue.roomState);
                 }); 
+            }
                 
                 
-            
+            //Add new member to the queue
             queue.addMember(data.user);
             
         });
@@ -73,7 +77,7 @@ function QueueManager(){
     };
 }
 
-function Queue(room){   
+function Queue(roomId){   
     
     EventEmitter.call(this);
     
@@ -84,15 +88,14 @@ function Queue(room){
             ACTIVE:'active'
 		};
 	this.roomState = this.roomStates.WAITING;
-    this.room = room;
+    this.room = {_id : roomId};
     this.maxWriters = 2;
     this.writers = [];
     this.watchers = [];
     
-    this.timer = 3000;//30 seconds 
+    this.timer = 30000;//30 seconds 
     
     this.addMember = function(member){
-        console.log('add member')
         //dont do anything if user is already in the list or member is undefined
         if (this.writers.indexOf(member) > -1 ||  this.watchers.indexOf(member) > -1  || !member)
             return;
@@ -102,6 +105,8 @@ function Queue(room){
             this.writers.push(member);
             
             if(this.writers.length == this.maxWriters){
+                this.room.full = true;
+                Room.update(this.room);
                 this.updateState(this.roomStates.READY);
                
             }
@@ -126,8 +131,8 @@ function Queue(room){
 
     
     this.startTimer = function(){
-        console.log('started timer')
         this.updateState(this.roomStates.ACTIVE);
+        this.timesUp();
         setInterval(this.timesUp, this.timer);
         
     };
