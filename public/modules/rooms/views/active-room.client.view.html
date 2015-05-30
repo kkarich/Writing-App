@@ -3,6 +3,8 @@
     
     <md-card ng-show="roomState === roomStates.ACTIVE">
       <md-card-content >
+       <md-progress-linear md-mode="determinate" value="{{percentLeft}}"></md-progress-linear>
+      
         <h2 class="md-title">The asteroid was hurtling straight for Earth…</h2> 
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 

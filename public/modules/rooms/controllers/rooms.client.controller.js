@@ -1,8 +1,8 @@
 'use strict';
 
 // Rooms controller
-angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
-	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
+angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks',
+	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks) {
 		$scope.authentication = Authentication;
         $scope.room = {
             prompt:'some random prompt',

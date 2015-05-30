@@ -5,26 +5,24 @@
 angular.module('rooms').controller('ActiveRoomController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
-		
+		var timer;
+		$scope.maxTime = 30000;
+		$scope.timeLeft = $scope.maxTime;
 		$scope.roomStates = {
             WAITING:'waiting',
             READY:'ready',
             ACTIVE:'active'
 		};
-		
-		
-		
+		$scope.roomState = $scope.roomStates.WAITING;
 		
 		
 		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
 		
 		
         Socket.on('room.queue-change', function(position) {
-            var seconds = new Date().getTime() / 1000;
-            console.log(seconds)
-            
+            $scope.startTimer();
             if ($scope.room.currentWriter){
-                $scope.create_block()}
+                $scope.create_block();}
                 
             $scope.text = '';
             if (position == 0){
@@ -39,7 +37,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
         });
         
          Socket.on('room.state', function(state) {
-            console.log(state,'state')
            $scope.roomState = state;
            $scope.$apply();
         });
@@ -142,6 +139,20 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 				roomId: $stateParams.roomId
 			});
 			
+		};
+		
+		// Find existing Room
+		$scope.startTimer = function() {
+			$scope.timeLeft = $scope.maxTime;
+			
+			if ( angular.isDefined(timer) ) return;
+			
+            timer = setInterval(function(){
+                $scope.timeLeft-= 100;
+                $scope.percentLeft = parseInt($scope.timeLeft / $scope.maxTime * 100);
+                $scope.$apply();
+                console.log($scope.percentLeft);
+            }, 100);  
 		};
 	}
 ]);
