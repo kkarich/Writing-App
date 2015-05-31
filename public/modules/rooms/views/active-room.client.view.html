@@ -12,7 +12,7 @@
           created by {{block.user.displayName}}
         </md-tooltip>
     	</span>
-        <textarea ng-change="inputChanged()" ng-disabled="!room.currentWriter" ng-model="text" class="form-control" rows="3"></textarea>
+        <textarea ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text" class="form-control" rows="3"></textarea>
     	
       </md-card-content>
      
@@ -32,6 +32,14 @@
         <h2 class="md-title">Let us know when you are ready</h2>
        
     	<md-button ng-click = "ready()">Add</md-button>
+      </md-card-content>
+     
+    </md-card>
+    
+    <md-card ng-show="roomState === roomStates.COMPLETED">
+      <md-card-content >
+        <h2 class="md-title">Room is completed</h2>
+       
       </md-card-content>
      
     </md-card>

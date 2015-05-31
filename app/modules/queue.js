@@ -26,12 +26,14 @@ module.exports = function(app){
       
         socket.on('room.text.changed', function (data) {
             var queue = queueManager.getQueue(data.room);
-            
-            if (data.user === queue.writers[0])
+            console.log('input changes anyone')
+            if (socket.id === queue.participants[0]){
                 socket.to(data.room).emit('text.changed',data.text);
+            }
+            
         });
         
-        socket.on('room.writer.ready', function (data) {
+        socket.on('room.participant.ready', function (data) {
             
             var queue = queueManager.getQueue(data.room);
             queue.startTimer();
@@ -53,7 +55,9 @@ module.exports = function(app){
         return this.queues[room];
     };
     
-    
+    this.deleteQueue = function(room){
+        delete this.queues[room];
+    };
     
     this.createQueue = function(room){
         var queue = new Queue(room);
@@ -63,34 +67,48 @@ module.exports = function(app){
 }
 
 
-function Queue(roomId){   
+function Queue(roomId){
     
-   
+    //crete self for use in timesUp functi
     var self = this;
+    
+    //init room, most likely add a request to the db later 
+    this.room = {_id : roomId};
+    
+    //List of all room states
     this.roomStates = {
             WAITING:'waiting',
             READY:'ready',
             ACTIVE:'active',
-            Completed:'completed'
+            COMPLETED:'completed'
 		};
+		
+	//curent room state
 	this.roomState = this.roomStates.WAITING;
-    this.room = {_id : roomId};
-    this.maxWriters = 2;
-    this.writers = [];
+	
+    
+    this.maxParticipants = 2;
+    this.participants = [];
     this.watchers = [];
     
-    this.timer = 30000;//30 seconds 
+    this.maxTurns = 2;
+    this.completedTurns = 0;
+    
+    this.timePerTurn = 30000;//30 seconds 
+    
+    //instance of queue timer later instantiated
+    this.timer;
     
     this.addMember = function(member){
         //dont do anything if user is already in the list or member is undefined
-        if (this.writers.indexOf(member) > -1 ||  this.watchers.indexOf(member) > -1  || !member)
+        if (this.participants.indexOf(member) > -1 ||  this.watchers.indexOf(member) > -1  || !member)
             return;
 
-        //if the room still needs writers add it, else they are just spectators
-        if( this.writers.length < this.maxWriters){
-            this.writers.push(member);
+        //if the room still needs participants add it, else they are just spectators
+        if( this.participants.length < this.maxParticipants){
+            this.participants.push(member);
             
-            if(this.writers.length == this.maxWriters){
+            if(this.participants.length == this.maxParticipants){
                 this.room.full = true;
                 Room.update(this.room);
                 this.updateState(this.roomStates.READY);
@@ -105,38 +123,52 @@ function Queue(roomId){
             this.watcher.push(member);
     };
     
-    //Add the current writer to the end of the queue 
+    //Add the current participants to the end of the queue 
     this.updateOrder = function(){
-        var currentWriter = this.writers.shift();
-        this.writers.push(currentWriter);
+        var currentParticipant = this.participants.shift();
+        this.participants.push(currentParticipant);
     };
     
-    //Add the current writer to the end of the queue 
+    //Add the current participants to the end of the queue 
     this.updateState = function(state){
         this.roomState = state;
         io.to(this.room._id).emit('room.state',this.roomState);
     };
     
 
-    
+    //update state to active, emit position to client, and start timer
     this.startTimer = function(){
         this.updateState(this.roomStates.ACTIVE);
-        this.timesUp();
-        setInterval(this.timesUp, this.timer);
+        
+        for(var i in self.participants){
+            io.to(self.participants[i]).emit('room.queue.start',i);
+        }
+        
+        this.timer = setInterval(this.timesUp, this.timePerTurn);
         
     };
     
     this.timesUp = function(){
+        self.checkForCompleted();
+        
         //update que then emit times up event 
         self.updateOrder();
-        for(var i in self.writers){
-            io.to(self.writers[i]).emit('room.queue-change',i);
+        for(var i in self.participants){
+            io.to(self.participants[i]).emit('room.queue.change',i);
         }
     };
     
-    this.cleanUp = function(){
-        // should change the room state to completed
-        // should 
+    this.checkForCompleted = function(){
+        this.completedTurns++;
+        if(this.completedTurns === this.maxTurns){
+            this.complete();
+        }
+    };
+    
+    
+    this.complete = function(){
+        this.updateState(this.roomStates.COMPLETED)
+        clearInterval(this.timer);
     };
     
 }

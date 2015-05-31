@@ -5,13 +5,18 @@
 angular.module('rooms').controller('ActiveRoomController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms','WritingBlocks','Socket',
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
+		
+		$scope.queue = {};
+		$scope.queue.currentParticipant = false;
+		
 		var timer;
 		$scope.maxTime = 30000;
 		$scope.timeLeft = $scope.maxTime;
 		$scope.roomStates = {
             WAITING:'waiting',
             READY:'ready',
-            ACTIVE:'active'
+            ACTIVE:'active',
+            COMPLETED:'completed'
 		};
 		$scope.roomState = $scope.roomStates.WAITING;
 		
@@ -19,20 +24,39 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
 		
 		
-        Socket.on('room.queue-change', function(position) {
+        Socket.on('room.queue.change', function(position) {
             $scope.startTimer();
-            if ($scope.room.currentWriter){
+            console.log('block create',position)
+           
+            
+            if ($scope.queue.currentParticipant){
+                console.log('create block')
                 $scope.create_block();}
                 
             $scope.text = '';
             if (position == 0){
-                $scope.room.currentWriter = true;
+                $scope.queue.currentParticipant = true;
             }
             else {
-                $scope.room.currentWriter = false;
+                $scope.queue.currentParticipant = false;
             }
             $scope.$apply();
-            console.log(position);
+            
+        });
+        
+        Socket.on('room.queue.start', function(position) {
+            $scope.startTimer();
+            $scope.text = '';
+            
+             console.log($scope.queue,position)
+            
+            if (position == 0){
+                $scope.queue.currentParticipant = true;
+            }
+            else {
+                $scope.queue.currentParticipant = false;
+            }
+            $scope.$apply();
             
         });
         
@@ -52,19 +76,20 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
         
         $scope.ready = function(){
            
-            Socket.emit('room.writer.ready',{user: $scope.authentication.user._id,room:$stateParams.roomId});
+            Socket.emit('room.participant.ready',{user: $scope.authentication.user._id,room:$stateParams.roomId});
                 
         };
         
         $scope.inputChanged = function(){
-            if($scope.room.currentWriter){
+            if($scope.queue.currentParticipant){
                 Socket.emit('room.text.changed',{user: $scope.authentication.user._id,room:$stateParams.roomId,text:$scope.text});
             }
                 
             };
         // Create new writing Block
 		$scope.create_block = function() {
-		    if($scope.room.currentWriter){
+		    console.log($scope.queue.currentParticipant)
+		    if($scope.queue.currentParticipant){
                 console.log(this.text,$scope.room);
                 var block = new WritingBlocks ({
                     text: $scope.text,
@@ -151,7 +176,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
                 $scope.timeLeft-= 100;
                 $scope.percentLeft = parseInt($scope.timeLeft / $scope.maxTime * 100);
                 $scope.$apply();
-                console.log($scope.percentLeft);
             }, 100);  
 		};
 	}
