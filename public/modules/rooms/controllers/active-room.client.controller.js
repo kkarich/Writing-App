@@ -6,12 +6,13 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
 		
-		$scope.queue = {};
-		$scope.queue.currentParticipant = false;
+		$scope.queue = {
+            currentParticipant:false,
+            maxTime:30000,
+            timeLeft:30000,
+		};
+		$scope.queue.timer;
 		
-		var timer;
-		$scope.maxTime = 30000;
-		$scope.timeLeft = $scope.maxTime;
 		$scope.roomStates = {
             WAITING:'waiting',
             READY:'ready',
@@ -25,13 +26,12 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		
 		
         Socket.on('room.queue.change', function(position) {
-            $scope.startTimer();
-            console.log('block create',position)
-           
+            $scope.resetTimer();
             
             if ($scope.queue.currentParticipant){
-                console.log('create block')
-                $scope.create_block();}
+                $scope.create_block();
+                
+            }
                 
             $scope.text = '';
             if (position == 0){
@@ -104,56 +104,6 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		    }
 		};
 
-		// Create new Room
-		$scope.create = function() {
-			// Create new Room object
-			var room = new Rooms ({
-				prompt:$scope.room.prompt
-			});
-
-			// Redirect after save
-			room.$save(function(response) {
-				$location.path('rooms/' + response._id);
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		// Remove existing Room
-		$scope.remove = function(room) {
-			if ( room ) { 
-				room.$remove();
-
-				for (var i in $scope.rooms) {
-					if ($scope.rooms [i] === room) {
-						$scope.rooms.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.room.$remove(function() {
-					$location.path('rooms');
-				});
-			}
-		};
-
-		// Update existing Room
-		$scope.update = function() {
-			var room = $scope.room;
-
-			room.$update(function() {
-				$location.path('rooms/' + room._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		// Find a list of Rooms
-		$scope.find = function() {
-			$scope.rooms = Rooms.query();
-		};
-
 		// Find existing Room
 		$scope.init = function() {
 			$scope.room = Rooms.get({ 
@@ -166,17 +116,18 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 			
 		};
 		
-		// Find existing Room
+		// Start timer
 		$scope.startTimer = function() {
-			$scope.timeLeft = $scope.maxTime;
-			
-			if ( angular.isDefined(timer) ) return;
-			
-            timer = setInterval(function(){
-                $scope.timeLeft-= 100;
-                $scope.percentLeft = parseInt($scope.timeLeft / $scope.maxTime * 100);
+            $scope.queue.timer = setInterval(function(){
+                $scope.queue.timeLeft-= 100;
+                $scope.percentLeft = parseInt($scope.queue.timeLeft / $scope.queue.maxTime * 100);
                 $scope.$apply();
             }, 100);  
+		};
+		
+		// Reset Timer
+		$scope.resetTimer = function() {
+			$scope.queue.timeLeft = $scope.queue.maxTime;
 		};
 	}
 ]);

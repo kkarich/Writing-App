@@ -33,7 +33,7 @@ body{
     width:70px;
     height:100%;
     position:fixed;
-    background-color:#1C1C1F;
+    background-color:#86AEB7;
     z-index:61;
 }
 
@@ -60,13 +60,31 @@ body{
     
 }
 
+#toolbar .navigation:nth-child(1):hover{
+    /*background-color:#86AFC1;*/
+   background-color:#F08E5B;
+    
+}
+
 #toolbar .navigation:nth-child(2){
    top:73px;
     
 }
 
+#toolbar .navigation:nth-child(2):hover{
+   /*background-color:#F9CA67;*/
+   background-color:#F08E5B;
+    
+}
+
 #toolbar .navigation:nth-child(3){
    top:136px;
+    
+}
+
+#toolbar .navigation:nth-child(3):hover{
+   /*background-color:#E27C75;*/
+   background-color:#F08E5B;
     
 }
 
@@ -81,8 +99,16 @@ body{
     bottom:20px;
 }
 
+#toolbar .navigation:last-child:hover{
+   /*background-color:#A3CAB3;*/
+   background-color:#F08E5B;
+}
+
+
+
+
 #toolbar .navigation:hover{
-    color:#DFE0E6;
+    color:#EDEFF0;
     cursor:pointer;
 }
 
@@ -115,6 +141,16 @@ md-grid-list md-grid-tile {
     color:red;
 }
 
-md-tooltip{
-    background-color:#30363C;
+md-tooltip  {
+  background-color:#F08E5B;
+  margin-left:-8px;
+  color:green;
+  
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+md-tooltip .md-content {
+  background-color:#F08E5B;
+  opacity:.5;
 }
