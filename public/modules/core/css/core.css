@@ -33,7 +33,7 @@ body{
     width:70px;
     height:100%;
     position:fixed;
-    background-color:#86AEB7;
+    background-color:#00BCD4;
     z-index:61;
 }
 
@@ -52,7 +52,8 @@ body{
     margin-right:auto;
     
     height:63px;
-    color:#88898C
+    color:#EDEFF0;
+   /* color:#88898C*/
 }
 
 #toolbar .navigation:nth-child(1){
@@ -62,7 +63,7 @@ body{
 
 #toolbar .navigation:nth-child(1):hover{
     /*background-color:#86AFC1;*/
-   background-color:#F08E5B;
+   background-color:#FF5722;
     
 }
 
@@ -73,7 +74,7 @@ body{
 
 #toolbar .navigation:nth-child(2):hover{
    /*background-color:#F9CA67;*/
-   background-color:#F08E5B;
+   background-color:#FF5722;
     
 }
 
@@ -84,7 +85,7 @@ body{
 
 #toolbar .navigation:nth-child(3):hover{
    /*background-color:#E27C75;*/
-   background-color:#F08E5B;
+   background-color:#FF5722;
     
 }
 
@@ -101,7 +102,7 @@ body{
 
 #toolbar .navigation:last-child:hover{
    /*background-color:#A3CAB3;*/
-   background-color:#F08E5B;
+   background-color:#FF5722;
 }
 
 
@@ -141,8 +142,16 @@ md-grid-list md-grid-tile {
     color:red;
 }
 
+ md-tooltip .md-background.md-show-add {transition: none}
+ md-tooltip .md-background.md-show-remove {transition: none}
+ md-tooltip .md-content.md-show-add {transition: none}
+ md-tooltip .md-content.md-show-remove {transition: none}
+ md-tooltip.md-hide {
+    transition: none }
+  md-tooltip.md-show {transition: none}
+
 md-tooltip  {
-  background-color:#F08E5B;
+  background-color:#FF5722;
   margin-left:-8px;
   color:green;
   
@@ -151,6 +160,6 @@ md-tooltip  {
 }
 
 md-tooltip .md-content {
-  background-color:#F08E5B;
-  opacity:.5;
+  background-color:#FF5722;
 }
+

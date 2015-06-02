@@ -1,4 +1,4 @@
-<section data-ng-controller="ActiveRoomController" data-ng-init="init()">
+<section class = "container" data-ng-controller="ActiveRoomController" data-ng-init="init()">
   
     <md-card ng-show="roomState === roomStates.ACTIVE">
       <md-card-content >
@@ -12,7 +12,10 @@
         </md-tooltip>
     	</span>
         <textarea ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text" class="form-control" rows="3"></textarea>
-    	
+    	<!--    <md-input-container>
+                <textarea ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text"></textarea>
+            </md-input-container>
+            -->
       </md-card-content>
      
     </md-card>
