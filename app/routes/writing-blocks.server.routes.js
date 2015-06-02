@@ -7,7 +7,7 @@ module.exports = function(app) {
 	// Writing blocks Routes
 	app.route('/writing-blocks')
 		.get(writingBlocks.list)
-		.post(users.requiresLogin, writingBlocks.create);
+		.post( writingBlocks.create);
 
 	app.route('/writing-blocks/:writingBlockId')
 		.get(writingBlocks.read)

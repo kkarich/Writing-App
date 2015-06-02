@@ -6,6 +6,7 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 	function($scope, $stateParams, $location, Authentication, Rooms,WritingBlocks,Socket) {
 		$scope.authentication = Authentication;
 		
+		$scope.prompt = "This is a prmopt"
 		$scope.queue = {
             currentParticipant:false,
             maxTime:30000,
@@ -22,8 +23,7 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		$scope.roomState = $scope.roomStates.WAITING;
 		
 		
-		Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
-		
+	
 		
         Socket.on('room.queue.change', function(position) {
             $scope.resetTimer();
@@ -108,6 +108,15 @@ angular.module('rooms').controller('ActiveRoomController', ['$scope', '$statePar
 		$scope.init = function() {
 			$scope.room = Rooms.get({ 
 				roomId: $stateParams.roomId
+			}, function(room){
+                if(room.completed){
+                    console.log('room is completed')
+                    $scope.roomState = $scope.roomStates.COMPLETED;
+                }
+                else{
+                    Socket.emit('join', {user: $scope.authentication.user._id,room:$stateParams.roomId});
+		            console.log('emit join')
+                }
 			});
 			
 			$scope.writingBlocks = Rooms.writingBlocks({ 

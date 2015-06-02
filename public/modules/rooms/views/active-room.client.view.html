@@ -2,16 +2,17 @@
   
     <md-card ng-show="roomState === roomStates.ACTIVE">
       <md-card-content >
-       <md-progress-linear md-mode="determinate" value="{{percentLeft}}"></md-progress-linear>
-      
-        <h2 class="md-title">The asteroid was hurtling straight for Earth…</h2> 
+       
+        <h2 class="md-title">{{prompt}}</h2> 
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 
-    	      <md-tooltip>
-          created by {{block.user.displayName}}
-        </md-tooltip>
+    	      
     	</span>
-        <textarea ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text" class="form-control" rows="3"></textarea>
+    	<span>{{text}}</span>
+    		<md-progress-linear md-mode="determinate" value="{{percentLeft}}"></md-progress-linear>
+      
+        <textarea ng-hide = "!queue.currentParticipant" ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text" class="form-control" rows="3"></textarea>
+    
     	<!--    <md-input-container>
                 <textarea ng-change="inputChanged()" ng-disabled="!queue.currentParticipant" ng-model="text"></textarea>
             </md-input-container>
@@ -22,8 +23,8 @@
     
     <md-card ng-show="roomState === roomStates.WAITING">
       <md-card-content >
-        <h2 class="md-title">Waiting for friends</h2>
-       
+        <span class="md-title">Just waiting for pen pals ... </span>
+       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     	<md-content></md-content>
       </md-card-content>
      
@@ -33,15 +34,23 @@
       <md-card-content >
         <h2 class="md-title">Let us know when you are ready</h2>
        
-    	<md-button ng-click = "ready()">Add</md-button>
+    	<md-button ng-click = "ready()" class = "md-raised md-primary" >Start Writing</md-button>
       </md-card-content>
      
     </md-card>
     
     <md-card ng-show="roomState === roomStates.COMPLETED">
       <md-card-content >
-        <h2 class="md-title">Room is completed</h2>
-       
+      
+        <h2 class="md-title">This room is completed</h2>
+      
+      <h2 class="md-title">{{prompt}}</h2> 
+        <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
+    	    {{block.text}} 
+    	      
+    	</span>
+    	<span>{{text}}</span>
+         
       </md-card-content>
      
     </md-card>

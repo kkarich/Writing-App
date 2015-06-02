@@ -7,9 +7,9 @@ module.exports = function(app) {
 	// Rooms Routes
 	app.route('/rooms')
 		.get(rooms.join)
-		.post(users.requiresLogin, rooms.create);
+		.post( rooms.create);
 	app.route('/rooms/join')
-		.post(users.requiresLogin, rooms.join);
+		.post( rooms.join);
 
 	app.route('/rooms/:roomId')
 		.get(rooms.read)

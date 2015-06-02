@@ -13,13 +13,21 @@
         <h1  class="md-display-2">Start Writting</h1>
         <section layout="row" >
             <md-content flex='50' >
-                <p>This is some text about some things</p>
-                <textarea  class="form-control" rows="3"></textarea>
-    	    
+            <div ng-click = "focusText()">
+                <span id = "word">This is some text about some things</span>
+                <span>{{text}}</span>
+                </div>
+                <div style = "
+    height: 0;
+    overflow: hidden;"
+>
+                <textarea id = "text" ng-model = "text"  class="form-control" rows="3"></textarea>
+                </div>
+    	        <input  ng-model = "text" type=hidden name=stuff>
 
             </md-content>
              <md-content flex='50'>
-                 <md-button class="md-raised">Button</md-button>
+                 <md-button ng-click = "focusText()" class="md-raised">Button</md-button>
             </md-content>
         </section>
       </md-card-content>

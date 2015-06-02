@@ -161,6 +161,7 @@ function Queue(roomId){
     this.checkForCompleted = function(){
         this.completedTurns++;
         if(this.completedTurns === this.maxTurns){
+            
             this.complete();
         }
     };
@@ -168,6 +169,9 @@ function Queue(roomId){
     
     this.complete = function(){
         this.updateState(this.roomStates.COMPLETED)
+        this.room.completed = true;
+        Room.update(this.room);
+        
         clearInterval(this.timer);
     };
     
