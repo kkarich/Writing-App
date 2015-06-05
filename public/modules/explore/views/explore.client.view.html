@@ -1,5 +1,13 @@
 <section flex layout-padding layout-margin data-ng-controller="ExploreController">
     <h1 class = "md-display-1">Explore</h1>
+    <md-list-item class="md-3-line" >
+        <img ng-src="{{todos[0].face}}?25" class="md-avatar" alt="{{todos[0].who}}" />
+        <div class="md-list-item-text">
+          <h3>THis is the prompt</h3>
+          <p>This will be the first sentence of the story</p>
+        </div>
+      </md-list-item>
+    <!--
 	<md-tabs md-dynamic-height flex md-selected="data.selectedIndex" >
       <md-tab id="rooms">
         <md-tab-label>Open Rooms</md-tab-label>
@@ -141,4 +149,5 @@
         </md-tab-body>
       </md-tab>
     </md-tabs>
+    -->
 </section>

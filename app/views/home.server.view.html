@@ -1,5 +1,74 @@
-{% extends 'layout.server.view.html' %}
 
-{% block content %}
-	
-{% endblock %}
+	<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    
+    <title>Scribe Squid</title>
+    
+    <link href="/css/coming-sssoon.css" rel="stylesheet" />  
+	<link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />  
+    <link href="lib/angular-material/angular-material.css" rel="stylesheet" >
+    <!--     Fonts     -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
+  
+</head>
+
+<body ng-app="home">
+
+<div class="main" style="background-image: url('https://static.pexels.com/photos/154/people-apple-iphone-writing-large.jpg')">
+
+<!--    Change the image source 'images/rick.jpg' with your favourite image.     -->
+    
+    <div class="cover black" data-color="black"></div>
+     
+<!--   You can change the black color for the filter with those colors: blue, green, red, orange       -->
+
+    <div class="container" ng-controller="homeController">
+        <h1 class="logo cursive">
+            Scribe Squid
+        </h1>
+<!--  H1 can have 2 designs: "logo" and "logo cursive"           -->
+        
+        <div class="content">
+            <h4 class="motto">The first collaborative real-time writing app</h4>
+            <div class="subscribe">
+                <h5 class="info-text">
+                    Join the waiting list for access to the private alpha. 
+                </h5>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 col-sm6-6 col-sm-offset-3 ">
+                        <form class="form-inline" role="form">
+                          <div class="form-group">
+                            <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                            <input type="email" class="form-control transparent" placeholder="Your email here...">
+                          </div>
+                          <md-button class="md-primary md-raised" ng-click="showForm($event)" flex flex-md="100">
+      Join
+    </md-button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+ <script type="text/javascript" src="lib/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.js"></script>
+  
+  <script type="text/javascript" src="/lib/angular/angular.js"></script>
+  <script type="text/javascript" src="lib/angular-aria/angular-aria.js"></script>
+  <script type="text/javascript" src="/lib/angular-animate/angular-animate.js"></script>
+  <script type="text/javascript" src="lib/angular-material/angular-material.js"></script>
+  <script type="text/javascript" src="modules/home/home.js"></script>
+</body>
+  
+</html>

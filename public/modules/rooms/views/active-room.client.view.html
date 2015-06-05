@@ -3,7 +3,7 @@
     <md-card ng-show="roomState === roomStates.ACTIVE">
       <md-card-content >
        
-        <h2 class="md-title">{{prompt}}</h2> 
+        <h2 class="md-title">{{prompt}} ...</h2> 
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 
     	      
@@ -42,9 +42,7 @@
     <md-card ng-show="roomState === roomStates.COMPLETED">
       <md-card-content >
       
-        <h2 class="md-title">This room is completed</h2>
-      
-      <h2 class="md-title">{{prompt}}</h2> 
+      <span >{{prompt}}</span> 
         <span class = "writing-block" data-ng-repeat="block in writingBlocks | orderBy:'created'">
     	    {{block.text}} 
     	      

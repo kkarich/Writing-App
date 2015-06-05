@@ -8,7 +8,8 @@
 			scope,
 			$httpBackend,
 			$stateParams,
-			$location;
+			$location,
+			socket;
 
 		// The $resource service augments the response object with methods for updating and deleting the resource.
 		// If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -38,6 +39,8 @@
 		beforeEach(inject(function($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_) {
 			// Set a new global scope
 			scope = $rootScope.$new();
+			socket = io.connect();
+			 spyOn(socket, 'emit');
 
 			// Point global variables to injected services
 			$stateParams = _$stateParams_;
@@ -50,10 +53,34 @@
 			});
 		}));
 
-		it('Should do some controller test', inject(function() {
-			// The test logic
-			// ...
+		it('resetTimer() should set the time left in the current turn equal to the turn time', inject(function() {
+		    
+		    //Set timeLeftInTurn equal to 0
+		    scope.queue.timeLeftInTurn = 0;
+		    //Make sure they are not equal to each other first
+		    expect(scope.queue.timeLeftInTurn).not.toEqual(scope.queue.turnTime);
+		    //Reset timer
+			scope.resetTimer();
+			//Make sure they now equal each other
+			expect(scope.queue.timeLeftInTurn).toEqual(scope.queue.turnTime);
 		}));
+		
+		it('startTimer() should init the queue.timer', inject(function() {
+		    
+		    //Make sure they are not equal to each other first
+		    expect(scope.queue.timer).not.toBeDefined();
+		    scope.startTimer();
+		    expect(scope.queue.timer).toBeDefined();
+		    
+		}));
+		
+		it('inputChanged() should init the queue.timer', inject(function() {
+            scope.queue.currentParticipant = true;
+            scope.inputChanged();
+            socket.emit();
+            expect(socket.emit).toHaveBeenCalled();
+		}));
+		
 	});
 }());
 

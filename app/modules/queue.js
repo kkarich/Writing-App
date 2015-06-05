@@ -1,3 +1,4 @@
+'use strict';
 
 var Room = require('../../app/controllers/rooms.server.controller');
 
@@ -9,7 +10,7 @@ module.exports = function(app){
     
     //When recieve join event from items controller add user id to room. (used for only sending data to correct users)
     io.on('connection', function (socket) {
-        console.log('someone connection')
+        console.log('someone connection');
         socket.on('join',function(data){
             //Join the writing room and a user room (soo we can send messages either to the user or to the room)
             socket.join(data.room);
@@ -26,7 +27,6 @@ module.exports = function(app){
       
         socket.on('room.text.changed', function (data) {
             var queue = queueManager.getQueue(data.room);
-            console.log('input changes anyone')
             if (socket.id === queue.participants[0]){
                 socket.to(data.room).emit('text.changed',data.text);
             }
@@ -40,7 +40,7 @@ module.exports = function(app){
         });
         
          socket.on('disconnect', function(){
-            console.log('some one left', socket.id)
+            console.log('some one left', socket.id);
             
         });
       
@@ -168,7 +168,7 @@ function Queue(roomId){
     
     
     this.complete = function(){
-        this.updateState(this.roomStates.COMPLETED)
+        this.updateState(this.roomStates.COMPLETED);
         this.room.completed = true;
         Room.update(this.room);
         
