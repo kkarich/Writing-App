@@ -91,7 +91,7 @@ function Queue(roomId){
     this.participants = [];
     this.watchers = [];
     
-    this.maxTurns = 2;
+    this.maxTurns = 6;
     this.completedTurns = 0;
     
     this.timePerTurn = 30000;//30 seconds 

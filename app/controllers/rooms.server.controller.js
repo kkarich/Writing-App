@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
  */
  
 exports.update = function(room){
+    console.log('test')
     Room.findById(room._id).populate('user', 'displayName').exec(function(err, roomObj) {
         
 		roomObj = _.extend(roomObj , room);

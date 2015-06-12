@@ -4,7 +4,7 @@ var myAppModule = angular.module('home', ['ngMaterial']);
 angular.module('home')
 .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
-    .primaryPalette('deep-orange')
+    .primaryPalette('cyan')
     .accentPalette('cyan');
 });
 // configure the module.
@@ -13,21 +13,17 @@ myAppModule.controller('homeController', function($scope, $mdDialog) {
   $scope.showForm = function(ev) {
     $mdDialog.show({
       controller: DialogController,
+      clickOutsideToClose :true,
       templateUrl: '/modules/home/mailingListForm.html',
       targetEvent: ev,
-    })
-    .then(function(answer) {
-      $scope.alert = 'You said the information was "' + answer + '".';
-     
-    }, function() {
-      $scope.alert = 'You cancelled the dialog.';
-
     });
   };
   
+ 
+  
 });
 
-function DialogController($scope, $mdDialog) {
+function DialogController($scope, $mdDialog,$http) {
   $scope.hide = function() {
     $mdDialog.hide();
   };
@@ -36,5 +32,19 @@ function DialogController($scope, $mdDialog) {
   };
   $scope.answer = function(answer) {
     $mdDialog.hide(answer);
+  };
+  
+   $scope.createContact = function(){
+      $http.post('/contacts', $scope.contact).
+          success(function(data, status, headers, config) {
+            // this callback will be called asynchronously
+            // when the response is available
+            $scope.message = data.message;
+          }).
+          error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status
+            console.log('data')
+          });
   };
 }

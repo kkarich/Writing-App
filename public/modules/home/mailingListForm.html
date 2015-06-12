@@ -1,21 +1,23 @@
-<md-dialog md-padding aria-label="Mango (Fruit)" flex = "50">
-<h2 class = "md-title">Join our mailing list</h2>
-  <form>
-  <md-dialog-content class="sticky-container">
+<md-dialog md-padding aria-label="Sign Up Form" flex = "50">
+
+  <form class = "contactForm">
+  <md-dialog-content  class="sticky-container">
+  <h2 class = "md-title">Join our mailing list</h2>
     <div>
     <md-input-container>
       <label>Email</label>
-      <input ng-model="user.email" type="email">
+      <input ng-model="contact.email" type="email">
     </md-input-container>
     
     <md-input-container flex>
         <label>What intrigues you about this app?</label>
-        <textarea ng-model="user.answer" columns="1" ></textarea>
+        <textarea ng-model="contact.info" columns="1" ></textarea>
       </md-input-container>
       </div>
       <span flex></span>
       <md-button ng-click = "hide()" class="md-raised md-primary">Close</md-button>
-       <md-button ng-click = "hide()" class="md-raised md-primary">Join</md-button>
+       <md-button ng-click = "createContact()" class="md-raised md-primary">Join</md-button>
+       <span class="md-body-2">{{message}}</span>
   </md-dialog-content>
 
   </form>
