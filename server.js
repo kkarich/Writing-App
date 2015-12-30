@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Module dependencies. test
+ * Module dependencies.
  */
 var init = require('./config/init')(),
 	config = require('./config/config'),
